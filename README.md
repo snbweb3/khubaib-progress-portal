@@ -1,45 +1,72 @@
 # Khubaib Progress Portal
 
-Lightweight school progress, attendance, lecture tracking, and performance statistics portal.
+Lightweight school progress, attendance, lecture tracking, and performance statistics portal for **Khubaib Foundation**.
 
-**Not a full LMS** — focused on operational tracking for teachers and visibility for students/sponsors.
+**Not a full LMS** — focused on operational tracking for teachers and visibility for students.
 
 ## Features
 
-- **Teachers**
-  - Mark daily attendance (Present / Late / Absent / Excused)
-  - Log lectures / topics taught
-  - Enter performance scores (quizzes, tests)
-  - Schedule upcoming tests
+### Teachers / Admin
+- Mark daily attendance (Present / Late / Absent / Excused)
+- Log lectures / topics taught
+- Enter performance scores (quiz, test, assignment, oral)
+- Schedule upcoming tests
 
-- **Students**
-  - View personal attendance history
-  - See performance statistics with basic filtering
-  - Check upcoming scheduled tests
+### Students
+- View personal attendance history + attendance rate
+- See performance statistics with subject filtering
+- Check upcoming scheduled tests
 
-- **Tech**
-  - Next.js (App Router) + Tailwind
-  - Supabase (Auth + Postgres)
-  - Resend (ready for email notifications)
-  - Deployable on Vercel
+### Tech Stack
+- **Next.js 15** (App Router) + TypeScript + Tailwind CSS
+- **Supabase** (Auth + Postgres + RLS)
+- **Resend** (ready for absence alerts & progress emails)
+- Deployable on **Vercel**
 
-## Setup
+## Quick Start
 
-1. Create a Supabase project
-2. Run the SQL in `supabase/schema.sql` in the SQL Editor
-3. Enable Email auth (or magic links)
-4. Copy `.env.local.example` to `.env.local` and fill in your keys
-5. Create user accounts in Supabase Auth and insert matching rows in `profiles` (role: teacher or student)
-6. `npm install && npm run dev`
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/snbweb3/khubaib-progress-portal.git
+   cd khubaib-progress-portal
+   ```
 
-## Deployment
+2. **Create a Supabase project**
+   - Go to [supabase.com](https://supabase.com)
+   - Create a new project
+   - Open the SQL Editor and run the contents of `supabase/schema.sql`
 
-- Connect the GitHub repo to Vercel
-- Add environment variables in Vercel project settings
-- Resend can be used for absence alerts or progress digests (API key in env)
+3. **Set up Auth**
+   - In Supabase → Authentication → Providers, enable Email
+   - Create test users (teacher + student)
+   - Insert matching rows into the `profiles` table (set `role` to `teacher` or `student`)
 
-## Volunteer Project Notes
+4. **Environment variables**
+   ```bash
+   cp .env.local.example .env.local
+   ```
+   Fill in:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `RESEND_API_KEY` (optional for emails)
 
-Pilot with one class or school. Expand RLS policies for production. Add more filters and charts as needed.
+5. **Install & run**
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-Built for Khubaib Foundation.
+## Deployment (Vercel)
+
+1. Import the GitHub repo into Vercel
+2. Add the same environment variables
+3. Deploy
+
+## Notes for Volunteers
+
+- Start with one class as a pilot
+- Expand Row Level Security (RLS) policies before wider use
+- Student ID entry in the performance form is temporary — replace with a dropdown later
+- Resend utility is ready in `src/lib/resend.ts` for absence alerts
+
+Built for the Khubaib Foundation volunteer project.
